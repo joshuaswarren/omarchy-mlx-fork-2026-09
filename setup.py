@@ -311,7 +311,7 @@ if __name__ == "__main__":
             extras["cpu"] = [f'mlx-cpu=={version}; platform_system == "Linux"']
 
         _setup(
-            name="mlx",
+            name="mlx-omarchy",
             packages=packages,
             extras_require=extras,
             entry_points=entry_points,
