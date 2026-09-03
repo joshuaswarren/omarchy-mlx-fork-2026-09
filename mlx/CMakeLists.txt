@@ -103,7 +103,16 @@ else()
                  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/backend/cuda/no_cuda.cpp)
 endif()
 
-if(MLX_BUILD_METAL OR MLX_BUILD_CUDA)
+if(MLX_BUILD_OMARCHY)
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/backend/omarchy)
+else()
+  target_sources(
+    mlx PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/backend/omarchy/no_omarchy.cpp)
+endif()
+
+if(MLX_BUILD_METAL
+   OR MLX_BUILD_CUDA
+   OR MLX_BUILD_OMARCHY)
   add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/backend/gpu)
 else()
   add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/backend/no_gpu)

@@ -36,6 +36,7 @@ option(MLX_BUILD_PYTHON_BINDINGS "Build python bindings for mlx" OFF)
 option(MLX_BUILD_METAL "Build metal backend" ON)
 option(MLX_BUILD_CPU "Build cpu backend" ON)
 option(MLX_BUILD_CUDA "Build cuda backend" OFF)
+option(MLX_BUILD_OMARCHY "Build omarchy (Honeykrisp Vulkan) backend" OFF)
 option(MLX_METAL_DEBUG "Enhance metal debug workflow" OFF)
 option(MLX_ENABLE_X64_MAC "Enable building for x64 macOS" OFF)
 option(MLX_BUILD_GGUF "Include support for GGUF format" ON)
@@ -163,6 +164,16 @@ if(MLX_BUILD_CUDA)
                                                           VERSION_LESS "13.2")
     message(FATAL_ERROR "CUDA Toolkit 13.1 is not supported.")
   endif()
+endif()
+
+if(MLX_BUILD_OMARCHY)
+  if(NOT CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    message(FATAL_ERROR "The Omarchy backend requires Linux.")
+  endif()
+  find_package(Vulkan REQUIRED)
+  message(
+    STATUS
+      "Vulkan found: include ${Vulkan_INCLUDE_DIRS}, libs ${Vulkan_LIBRARIES}")
 endif()
 
 if(MLX_BUILD_METAL)
@@ -417,6 +428,12 @@ endif()
 
 # ----------------------------- Installation -----------------------------
 include(GNUInstallDirs)
+
+# Omarchy runtime tooling. Added after GNUInstallDirs so the install destination
+# variables are defined.
+if(MLX_BUILD_OMARCHY)
+  add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/tools/mlx-omarchy-info)
+endif()
 
 if(WIN32)
   # Install DLLs to the same dir with extension file (core.pyd) on Windows.

@@ -46,3 +46,7 @@ target_link_options(tests PRIVATE ${SANITIZER_LINK_FLAGS})
 
 doctest_discover_tests(tests)
 add_test(NAME tests COMMAND tests)
+
+if(MLX_BUILD_OMARCHY)
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/omarchy)
+endif()
