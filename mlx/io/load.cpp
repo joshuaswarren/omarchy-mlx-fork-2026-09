@@ -11,6 +11,8 @@
 #endif // _WIN32
 
 #include "mlx/backend/cuda/cuda.h"
+#include "mlx/backend/cpu/device_info.h"
+#include "mlx/backend/gpu/device_info.h"
 #include "mlx/io.h"
 #include "mlx/io/load.h"
 #include "mlx/ops.h"
@@ -233,7 +235,14 @@ array load(std::shared_ptr<io::Reader> in_stream, StreamOrDevice s) {
     throw std::runtime_error("[load] Failed to open " + in_stream->label());
   }
 
-  auto stream = cu::is_available() ? to_stream(s) : to_stream(s, Device::cpu);
+  // Stay on the default-device stream whenever any GPU backend exists: the
+  // omarchy backend does not bridge a CPU-stream load into GPU compute, so
+  // the load must land on the device that will consume the tensors. A CPU
+  // stream applies only when a CPU backend exists and no GPU backend does.
+  auto stream = cu::is_available() || gpu::is_available() ||
+          !cpu::is_available()
+      ? to_stream(s)
+      : to_stream(s, Device::cpu);
 
   ////////////////////////////////////////////////////////
   // Read header and prepare array details
