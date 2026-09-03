@@ -36,8 +36,11 @@ def get_version():
     pypi_release = int(os.environ.get("PYPI_RELEASE", 0))
     dev_release = int(os.environ.get("DEV_RELEASE", 0))
     if not pypi_release or dev_release:
-        today = datetime.date.today()
-        version = f"{version}.dev{today.year}{today.month:02d}{today.day:02d}"
+        now = datetime.datetime.now()
+        version = (
+            f"{version}.dev{now.year}{now.month:02d}{now.day:02d}"
+            f"{now.hour:02d}{now.minute:02d}"
+        )
     if not pypi_release and not dev_release:
         git_hash = (
             subprocess.run(
@@ -50,6 +53,9 @@ def get_version():
         )
         version = f"{version}+{git_hash}"
 
+    local_version = os.environ.get("MLX_OMARCHY_LOCAL_VERSION", "")
+    if local_version:
+        version = f"{version}+{local_version}"
     return version
 
 
