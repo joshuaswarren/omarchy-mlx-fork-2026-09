@@ -1,5 +1,14 @@
 # MLX
 
+> About this repository: this is a snapshot fork of
+> [ml-explore/mlx](https://github.com/ml-explore/mlx), created on GitHub on
+> 3 September 2026. The last commit on `main` is upstream PR #4436
+> (`b6368984`, committed the same day), and `main` has no later commits. The
+> `omarchy` branch has six local patch commits that `main` does not have, and
+> 35 commits of `main` that it does not have (the latest patch is "Apply
+> mlx-version-time.patch: minute-resolution dev versions").
+> Everything below is inherited from upstream MLX.
+
 [**Quickstart**](#quickstart) | [**Installation**](#installation) |
 [**Documentation**](https://ml-explore.github.io/mlx/build/html/index.html) |
 [**Examples**](#examples)
@@ -68,8 +77,11 @@ in the documentation.
 
 ## Installation
 
-MLX is available on [PyPI](https://pypi.org/project/mlx/). To install MLX on
-macOS, run:
+The `pip` commands below install Apple's upstream MLX packages from
+[PyPI](https://pypi.org/project/mlx/), not this fork. To build from source, use
+the [from-source instructions](https://ml-explore.github.io/mlx/build/html/install.html#).
+
+To install MLX on macOS, run:
 
 ```bash
 pip install mlx
