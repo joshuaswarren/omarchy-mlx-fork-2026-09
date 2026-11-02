@@ -131,3 +131,7 @@ BibTex entry:
   year = {2023},
 }
 ```
+
+## Contributors
+
+Everyone credited so far: [CONTRIBUTORS.md](CONTRIBUTORS.md).
